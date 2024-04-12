@@ -8,3 +8,4 @@ Route::get('/players',[\App\Http\Controllers\Api\PlayerController::class,'index'
 Route::get('/players/{id}',[\App\Http\Controllers\Api\PlayerController::class,'show']);
 Route::get('/players/{id}/absences',[\App\Http\Controllers\Api\AbsenceController::class,'getAbsences']);
 Route::get('/games/{id}',[\App\Http\Controllers\Api\GameController::class,'getGames']);
+Route::get('/league_user/table',[\App\Http\Controllers\Api\LeagueUserController::class,'getUsersRankingTable']);
