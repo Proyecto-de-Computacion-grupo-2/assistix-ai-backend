@@ -13,7 +13,7 @@ class JugadorController extends Controller
         return json_encode($jugadores);
     }
 
-    public function get(Request $request, jugador  $id){
-        return json_encode($id);
+    public function get(Request $request, jugador  $id_mundo_deportivo){
+        return json_encode($id_mundo_deportivo);
     }
 }
