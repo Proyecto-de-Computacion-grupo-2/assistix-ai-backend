@@ -11,26 +11,26 @@ class PlayerController extends Controller
     /**
      * Get all the players in the database.
      *
-     * @return false|string
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $players = Player::all();
-        return json_encode($players);
+        return response()->json($players);
     }
 
     /**
      * Get all the information for a specific player.
      *
      * @param $id
-     * @return false|string
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
         $player = Player::find($id);
         if (!$player) {
-            return json_encode(['message' => 'Player not found'], 404);
+            return response()->json(['message' => 'Player not found'], 404);
         }
-        return json_encode($player);
+        return response()->json($player);
     }
 }
