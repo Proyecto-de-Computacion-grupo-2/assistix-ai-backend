@@ -10,5 +10,6 @@ Route::get('/users/table', [\App\Http\Controllers\Api\LeagueUserController::clas
 Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
 Route::get('/usersAll/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUser']);
 Route::get('users/{id}/{email}/{password}',[\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']); # Change this to post.
-Route::get('gr/{gw}',[\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']); # Change this to post.
+Route::get('gr/{gw}',[\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
+Route::get('price_variation/{player_id}',[\App\Http\Controllers\Api\PriceVariationController::class, 'getPriceVariationsPlayer']);
 
