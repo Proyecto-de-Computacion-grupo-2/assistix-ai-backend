@@ -1,5 +1,0 @@
-Step 1: Create the Player Model
-
-php artisan make:model Player
-
-php artisan make:controller Api/PlayerController --api

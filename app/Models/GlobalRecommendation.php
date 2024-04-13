@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LeagueUser extends Model
+class GlobalRecommendation extends Model
 {
     use HasFactory;
-    protected $table = 'league_user';
-    protected $primaryKey = 'id_user';
-    public $timestamps = false;
+    protected $table = 'global_recommendation';
+    protected $primaryKey = 'id_global_recommendation';
 }
