@@ -10,11 +10,11 @@ class LeagueUserController extends Controller
 {
     public function getUsersRankingTable()
     {
-        $league_users = LeagueUser::select('team_name', 'team_points', 'team_average', 'team_value', 'team_players')->get();
-        if ($league_users->isEmpty()) {
+        $user = LeagueUser::select('id_user','team_name', 'team_points', 'team_average', 'team_value', 'team_players')->get();
+        if ($user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
-        return response()->json($league_users);
+        return response()->json($user);
     }
 
     public function getUserMoneyDetails($id)
