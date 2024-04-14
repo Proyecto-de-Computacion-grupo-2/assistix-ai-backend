@@ -32,7 +32,18 @@ Route::get('/users_info/{id}', [\App\Http\Controllers\Api\LeagueUserController::
 Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'index']);
 Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'show']);
 
+/**
+ * Prediction points.
+ */
+Route::get('/player/pp/{id_player}/{gameweek}',[\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
 
+/**
+ * Price variation.
+ */
 Route::get('/player_value/{player_id}', [\App\Http\Controllers\Api\PriceVariationController::class, 'getPlayerValue']);
+
+/**
+ * User recommendations.
+ */
 Route::get('/ur/{id_user}/{gameweek}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'getUserRecommendationGameWeek']);
 

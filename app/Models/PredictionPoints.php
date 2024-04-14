@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PredictionPoints extends Model
 {
     use HasFactory;
+    protected $table = 'prediction_points';
+    protected $primaryKey = 'id_prediction_points';
 }
