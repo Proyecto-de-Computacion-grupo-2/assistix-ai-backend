@@ -33,4 +33,27 @@ class PlayerController extends Controller
         }
         return response()->json($player);
     }
+
+    /**
+     * Get all the players that are currently in the market.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function playerInMarket()
+    {
+        $players = Player::where('is_in_market', 1)->get();
+        if (!$players) {
+            return response()->json(['message' => 'Found no players in the market.'], 404);
+        }
+        return response()->json($players);
+    }
+
+    public function playersUser($id_user)
+    {
+        $players = Player::where('id_user', $id_user)->get();
+        if (!$players) {
+            return response()->json(['message' => 'Found no players in the market.'], 404);
+        }
+        return response()->json($players);
+    }
 }

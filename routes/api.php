@@ -35,7 +35,7 @@ Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 
 /**
  * Prediction points.
  */
-Route::get('/player/pp/{id_player}/{gameweek}',[\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
 
 /**
  * Price variation.
@@ -46,4 +46,19 @@ Route::get('/player_value/{player_id}', [\App\Http\Controllers\Api\PriceVariatio
  * User recommendations.
  */
 Route::get('/ur/{id_user}/{gameweek}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'getUserRecommendationGameWeek']);
+
+/**
+ *  --------------------------------------------------------------- Custom Endpoints ---------------------------------------------------------------
+ */
+
+/**
+ * Market page.
+ */
+Route::get('/players_market', [\App\Http\Controllers\Api\PlayerController::class, 'playerInMarket']);
+
+/**
+ * Dashboard page.
+ */
+Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
+
 
