@@ -11,4 +11,9 @@ class LeagueUser extends Model
     protected $table = 'league_user';
     protected $primaryKey = 'id_user';
     public $timestamps = false;
+
+    public function players()
+    {
+        return $this->hasMany(Player::class, 'id_mundo_deportivo');
+    }
 }
