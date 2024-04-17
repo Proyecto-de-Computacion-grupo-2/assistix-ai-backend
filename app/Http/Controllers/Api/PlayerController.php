@@ -35,18 +35,28 @@ class PlayerController extends Controller
     }
 
     /**
-     * Get all the players that are currently in the market.
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function playerInMarket()
     {
-        $players = Player::where('is_in_market', 1)->get();
-        if (!$players) {
-            return response()->json(['message' => 'Found no players in the market.'], 404);
+        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo','full_name','position','is_in_market','sell_price','photo_body','photo_face']);
+
+        if ($players->isEmpty()) {
+            return response()->json(['message' => 'No players found in the market.'], 404);
         }
+
+        // Manually attach the latest four games to each player
+        foreach ($players as $player) {
+            $latestGames = $player->games()
+                ->orderByDesc('game_week')
+                ->limit(4)
+                ->get(['game_week', 'mixed']);
+            $player->latest_games = $latestGames;
+        }
+
         return response()->json($players);
     }
+
 
     /**
      * Get all the players in a user team.

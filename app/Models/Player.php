@@ -10,4 +10,9 @@ class Player extends Model
     use HasFactory;
     protected $table = "player";
     protected $primaryKey = "id_mundo_deportivo";
+
+    public function games()
+    {
+        return $this->hasMany(Game::class, 'id_mundo_deportivo', 'id_mundo_deportivo');
+    }
 }
