@@ -61,4 +61,5 @@ Route::get('/players_market', [\App\Http\Controllers\Api\PlayerController::class
  */
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
 
+Route::get('/magic', [\App\Http\Controllers\Api\GameController::class, 'getMagic3Players']);
 

@@ -7,6 +7,12 @@ use App\Models\GlobalRecommendation;
 
 class GlobalRecommendationController extends Controller
 {
+    /**
+     * Get global recommendations.
+     *
+     * @param $gw specific gameweek.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getGlobalRecommendationsGW($gw){
 
         $recommendations = GlobalRecommendation::where('gameweek', $gw)->get();

@@ -48,6 +48,11 @@ class PlayerController extends Controller
         return response()->json($players);
     }
 
+    /**
+     * Get all the players in a user team.
+     * @param $id_user
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function playersUser($id_user)
     {
         $players = Player::where('id_user', $id_user)->get();

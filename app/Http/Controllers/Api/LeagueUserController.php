@@ -8,6 +8,10 @@ use App\Models\LeagueUser;
 
 class LeagueUserController extends Controller
 {
+    /**
+     * Get the Users table in the frontend.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUsersRankingTable()
     {
         $user = LeagueUser::select('id_user','team_name', 'team_points', 'team_average', 'team_value', 'team_players')->get();
@@ -17,6 +21,11 @@ class LeagueUserController extends Controller
         return response()->json($user);
     }
 
+    /**
+     * Get the user money details.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserMoneyDetails($id)
     {
         $league_user = LeagueUser::find($id, ['id_user', 'current_balance', 'future_balance', 'maximum_debt', 'team_points']);
@@ -26,6 +35,14 @@ class LeagueUserController extends Controller
         return response()->json($league_user);
     }
 
+    /**
+     * Update the user email and password in the database when the user gets logged in.
+     *
+     * @param $id
+     * @param $email
+     * @param $password
+     * @return \Illuminate\Http\JsonResponse|void
+     */
     public function addUserLoginCredentials($id, $email, $password)
     {
         $user = LeagueUser::find($id);
@@ -36,6 +53,12 @@ class LeagueUserController extends Controller
         $user->password = $password;
         $user->save();
     }
+
+    /**
+     * Get all the information for a user.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
 
     public function getUser($id)
     {

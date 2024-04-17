@@ -12,7 +12,7 @@ class AbsenceController extends Controller
      *
      * Get all the absences for a specific player.
      *
-     * @param $id
+     * @param $id mundo deportivo player id.
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAbsences($id)
