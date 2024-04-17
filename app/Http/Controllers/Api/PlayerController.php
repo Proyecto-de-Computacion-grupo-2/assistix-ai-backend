@@ -35,7 +35,14 @@ class PlayerController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * Retrieves all players currently marked as 'in the market' and their latest four game entries.
+     *
+     * Each player's information includes selected details such as ID, name, position, and pricing,
+     * along with a photo. Additionally, for each player, the function fetches the latest four games,
+     * focusing only on the 'game_week' and 'mixed' columns for those games.
+     *
+     * @return \Illuminate\Http\JsonResponse Returns a JSON response with each player's information.
+     * If no players are found in the market, a 404 response is returned with an error message.
      */
     public function playerInMarket()
     {
