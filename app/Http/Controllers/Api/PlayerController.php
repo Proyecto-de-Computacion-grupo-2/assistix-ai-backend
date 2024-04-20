@@ -14,7 +14,7 @@ class PlayerController extends Controller
      */
     public function getPlayers()
     {
-        $players = Player::all('id_mundo_deportivo','full_name','position','player_value','photo_body','photo_face','season_23_24');
+        $players = Player::all('id_mundo_deportivo', 'full_name', 'position', 'player_value', 'photo_body', 'photo_face', 'season_23_24');
         return response()->json($players);
     }
 
@@ -47,15 +47,61 @@ class PlayerController extends Controller
 
         $response = [
             'id_mundo_deportivo' => $player->id_mundo_deportivo,
-            'photo_body'         => $player->photo_body,
-            'photo_face'         => $player->photo_face,
-            'full_name'          => $player->full_name,
-            'position'           => $player->position,
-            'user_name'          => $player->leagueUser->team_name,
-            'team'=> $player_games->team
+            'photo_body' => $player->photo_body,
+            'photo_face' => $player->photo_face,
+            'full_name' => $player->full_name,
+            'position' => $player->position,
+            'user_name' => $player->leagueUser->team_name,
+            'team' => $player_games->team
         ];
         return response()->json($response);
     }
+
+    /**
+     * Get the last point prediction for a player.
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerNextPrediction($id)
+    {
+        $player = Player::find($id);
+
+        if (!$player) {
+            return response()->json(['message' => 'Player not found'], 404);
+        }
+
+        if (!$player->predictions) {
+            return response()->json(['message' => 'No predictions found for this player'], 404);
+        }
+
+        $prediction = $player->predictions->last();
+
+        $response = [
+            'id_mundo_deportivo' => $prediction->id_mundo_deportivo,
+            'gameweek' => $prediction->gameweek,
+            'date_prediction' => $prediction->date_prediction,
+            'point_prediction' => $prediction->point_prediction
+        ];
+
+        return response()->json($response);
+    }
+
+    /**
+     * Get all the absence for a player.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerAbsences($id) {
+        $player = Player::find($id);
+
+        if (!$player) {
+            return response()->json(['message' => 'Player not found'], 404);
+        }
+
+        return response()->json($player->absences);
+    }
+
 
     /**
      * Retrieves all players currently marked as 'in the market' and their latest four game entries.
@@ -69,7 +115,7 @@ class PlayerController extends Controller
      */
     public function playerInMarket()
     {
-        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo','full_name','position','is_in_market','sell_price','photo_body','photo_face']);
+        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'is_in_market', 'sell_price', 'photo_body', 'photo_face']);
 
         if ($players->isEmpty()) {
             return response()->json(['message' => 'No players found in the market.'], 404);

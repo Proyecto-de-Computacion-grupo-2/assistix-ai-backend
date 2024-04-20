@@ -2,12 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-/**
- * Absence endpoint.
- */
-Route::get('/absences/{id}', [\App\Http\Controllers\Api\AbsenceController::class, 'getAbsences']);
-
 /**
  *  Games endpoint.
  */
@@ -66,3 +60,6 @@ Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'getP
  * Player-id page.
  */
 Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayer']);
+Route::get('/players/next_prediction/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerNextPrediction']);
+Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerAbsences']);
+
