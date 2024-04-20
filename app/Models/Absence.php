@@ -14,6 +14,6 @@ class Absence extends Model
 
     public function player(): HasOne
     {
-        return $this->hasOne(Player::class,'id_user');
+        return $this->hasOne(Player::class,'id_mundo_deportivo');
     }
 }

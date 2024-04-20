@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Player extends Model
 {
     use HasFactory;
+
     protected $table = "player";
     protected $primaryKey = "id_mundo_deportivo";
 
-    public function absences(): HasMany
+    public function price_variations(): HasMany
     {
-        return $this->hasMany(Absence::class, 'id_mundo_deportivo');
+        return $this->hasMany(PriceVariation::class, 'id_mundo_deportivo');
     }
 
     public function predictions(): HasMany
@@ -22,14 +24,29 @@ class Player extends Model
         return $this->hasMany(PredictionPoints::class, 'id_mundo_deportivo');
     }
 
-    public function price_variations(): HasMany
+    public function absences(): HasMany
     {
-        return $this->hasMany(PriceVariation::class, 'id_mundo_deportivo');
+        return $this->hasMany(Absence::class, 'id_mundo_deportivo');
     }
 
-    public function games()
+    public function global_recommendation(): HasMany
     {
-        return $this->hasMany(Game::class, 'id_mundo_deportivo', 'id_mundo_deportivo');
+        return $this->hasMany(GlobalRecommendation::class, 'id_mundo_deportivo');
+    }
+
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class, 'id_mundo_deportivo');
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id_mundo_deportivo');
+    }
+
+    public function recommendations(): HasMany
+    {
+        return $this->hasMany(UserRecommendation::class, 'id_mundo_deportivo');
     }
 
 }
