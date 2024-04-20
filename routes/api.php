@@ -3,11 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- *  Games endpoint.
- */
-Route::get('/games/{id}', [\App\Http\Controllers\Api\GameController::class, 'getGames']);
-
-/**
  * Global recommendation endpoint.
  */
 Route::get('/gr/{gw}', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
@@ -24,11 +19,6 @@ Route::get('/users_info/{id}', [\App\Http\Controllers\Api\LeagueUserController::
  * Prediction points.
  */
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
-
-/**
- * Price variation.
- */
-Route::get('/player_value/{player_id}', [\App\Http\Controllers\Api\PriceVariationController::class, 'getPlayerValue']);
 
 /**
  * User recommendations.
@@ -63,4 +53,10 @@ Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 
 Route::get('/players/next_prediction/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerNextPrediction']);
 Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerAbsences']);
 Route::get('/players/games/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerGames']);
+Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerPointsPredictions']);
+
+/**
+ * Shared endpoints page.
+ */
+Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
 

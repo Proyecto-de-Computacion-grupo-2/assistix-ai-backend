@@ -123,6 +123,43 @@ class PlayerController extends Controller
 
 
     /**
+     * Get the three latest points predictions for a player.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerPointsPredictions($id) {
+        $player = Player::find($id);
+
+        if (!$player) {
+            return response()->json(['message' => 'Player not found'], 404);
+        }
+
+        $games = $player->predictions()
+            ->select('gameweek','point_prediction')
+            ->orderBy('gameweek', 'desc')
+            ->limit(3)
+            ->get();
+
+        return response()->json($games);
+    }
+
+    /**
+     * Get all the past price values for a player.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerHistoricValue($id) {
+        $player = Player::find($id);
+
+        $predictions = $player->price_variations()
+            ->select('id_mundo_deportivo','price_day','price','is_prediction')
+            ->get();
+
+        return response()->json($predictions);
+    }
+
+
+    /**
      * Retrieves all players currently marked as 'in the market' and their latest four game entries.
      *
      * Each player's information includes selected details such as ID, name, position, and pricing,
