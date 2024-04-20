@@ -8,6 +8,19 @@ use App\Models\Player;
 class PlayerController extends Controller
 {
     /**
+     * Aux function, to check if a player exists or not.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    private function findPlayerOrFail($id) {
+        $player = Player::find($id);
+        if (!$player) {
+            return response()->json(['message' => 'Player not found'], 404);
+        }
+        return $player;
+    }
+
+    /**
      * Get all the players in the database.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -26,11 +39,7 @@ class PlayerController extends Controller
      */
     public function getPlayer($id)
     {
-        $player = Player::find($id);
-
-        if (!$player) {
-            return response()->json(['message' => 'Player not found'], 404);
-        }
+        $player =  $this->findPlayerOrFail($id);
 
         if (!$player->leagueUser) {
             return response()->json(['message' => 'Associated league user not found'], 404);
@@ -65,11 +74,7 @@ class PlayerController extends Controller
      */
     public function getPlayerNextPrediction($id)
     {
-        $player = Player::find($id);
-
-        if (!$player) {
-            return response()->json(['message' => 'Player not found'], 404);
-        }
+        $player =  $this->findPlayerOrFail($id);
 
         if (!$player->predictions) {
             return response()->json(['message' => 'No predictions found for this player'], 404);
@@ -92,12 +97,9 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerAbsences($id) {
-        $player = Player::find($id);
-
-        if (!$player) {
-            return response()->json(['message' => 'Player not found'], 404);
-        }
+    public function getPlayerAbsences($id)
+    {
+        $player = $this->findPlayerOrFail($id);
 
         return response()->json($player->absences);
     }
@@ -107,12 +109,9 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerGames($id) {
-        $player = Player::find($id);
-
-        if (!$player) {
-            return response()->json(['message' => 'Player not found'], 404);
-        }
+    public function getPlayerGames($id)
+    {
+        $player =  $this->findPlayerOrFail($id);
 
         if (!$player->games) {
             return response()->json(['message' => 'No Games found for player'], 404);
@@ -127,15 +126,12 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerPointsPredictions($id) {
-        $player = Player::find($id);
-
-        if (!$player) {
-            return response()->json(['message' => 'Player not found'], 404);
-        }
+    public function getPlayerPointsPredictions($id)
+    {
+        $player =  $this->findPlayerOrFail($id);
 
         $games = $player->predictions()
-            ->select('gameweek','point_prediction')
+            ->select('gameweek', 'point_prediction')
             ->orderBy('gameweek', 'desc')
             ->limit(3)
             ->get();
@@ -148,11 +144,12 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerHistoricValue($id) {
-        $player = Player::find($id);
+    public function getPlayerHistoricValue($id)
+    {
+        $player =  $this->findPlayerOrFail($id);
 
         $predictions = $player->price_variations()
-            ->select('id_mundo_deportivo','price_day','price','is_prediction')
+            ->select('id_mundo_deportivo', 'price_day', 'price', 'is_prediction')
             ->get();
 
         return response()->json($predictions);
