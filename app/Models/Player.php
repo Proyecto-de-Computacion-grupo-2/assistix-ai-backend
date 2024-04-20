@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Player extends Model
 {
@@ -39,9 +40,9 @@ class Player extends Model
         return $this->hasMany(Game::class, 'id_mundo_deportivo');
     }
 
-    public function league_user(): HasOne
+    public function leagueUser(): BelongsTo
     {
-        return $this->hasOne(LeagueUser::class, 'id_mundo_deportivo');
+        return $this->belongsTo(LeagueUser::class,'id_user','id_user');
     }
 
     public function recommendations(): HasMany

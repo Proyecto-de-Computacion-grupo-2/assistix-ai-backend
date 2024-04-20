@@ -27,12 +27,6 @@ Route::get('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUs
 Route::get('/users_info/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUser']);
 
 /**
- *  Players endpoint.
- */
-Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'index']);
-Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'show']);
-
-/**
  * Prediction points.
  */
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
@@ -63,3 +57,12 @@ Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerControlle
 
 Route::get('/magic', [\App\Http\Controllers\Api\GameController::class, 'getMagic3Players']);
 
+/**
+ *  Players page.
+ */
+Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayers']);
+
+/**
+ * Player-id page.
+ */
+Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayer']);

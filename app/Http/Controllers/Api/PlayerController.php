@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Player;
 
 class PlayerController extends Controller
@@ -13,9 +12,9 @@ class PlayerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function getPlayers()
     {
-        $players = Player::all();
+        $players = Player::all('id_mundo_deportivo','full_name','position','player_value','photo_body','photo_face','season_23_24');
         return response()->json($players);
     }
 
@@ -25,13 +24,37 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function getPlayer($id)
     {
         $player = Player::find($id);
+
         if (!$player) {
             return response()->json(['message' => 'Player not found'], 404);
         }
-        return response()->json($player);
+
+        if (!$player->leagueUser) {
+            return response()->json(['message' => 'Associated league user not found'], 404);
+        }
+
+        if (!$player->games) {
+            return response()->json(['message' => 'No Games found for player'], 404);
+        }
+
+        /**
+         * Get the last game the player played, so we can get the team logo.
+         */
+        $player_games = $player->games->last();
+
+        $response = [
+            'id_mundo_deportivo' => $player->id_mundo_deportivo,
+            'photo_body'         => $player->photo_body,
+            'photo_face'         => $player->photo_face,
+            'full_name'          => $player->full_name,
+            'position'           => $player->position,
+            'user_name'          => $player->leagueUser->team_name,
+            'team'=> $player_games->team
+        ];
+        return response()->json($response);
     }
 
     /**
