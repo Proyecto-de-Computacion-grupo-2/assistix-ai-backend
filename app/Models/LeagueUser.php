@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class LeagueUser extends Model
 {
     use HasFactory;
+
     protected $table = 'league_user';
     protected $primaryKey = 'id_user';
     public $timestamps = false;
 
-    public function players()
+    public function players(): HasMany
     {
         return $this->hasMany(Player::class, 'id_mundo_deportivo');
     }

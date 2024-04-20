@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Absence extends Model
 {
     use HasFactory;
+
     protected $table = "absence";
     protected $primaryKey = "id_absence";
 
     public function player(): HasOne
     {
-        return $this->hasOne(Player::class,'id_mundo_deportivo');
+        return $this->hasOne(Player::class, 'id_mundo_deportivo');
     }
 }

@@ -29,7 +29,7 @@ class Player extends Model
         return $this->hasMany(Absence::class, 'id_mundo_deportivo');
     }
 
-    public function global_recommendation(): HasMany
+    public function global_recommendations(): HasMany
     {
         return $this->hasMany(GlobalRecommendation::class, 'id_mundo_deportivo');
     }
@@ -39,9 +39,9 @@ class Player extends Model
         return $this->hasMany(Game::class, 'id_mundo_deportivo');
     }
 
-    public function user(): HasOne
+    public function league_user(): HasOne
     {
-        return $this->hasOne(User::class, 'id_mundo_deportivo');
+        return $this->hasOne(LeagueUser::class, 'id_mundo_deportivo');
     }
 
     public function recommendations(): HasMany

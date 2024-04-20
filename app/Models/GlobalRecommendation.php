@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class GlobalRecommendation extends Model
 {
     use HasFactory;
+
     protected $table = 'global_recommendation';
     protected $primaryKey = 'id_global_recommendation';
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Game extends Model
 {
     use HasFactory;
+
     protected $table = 'game';
     protected $primaryKey = 'id_game';
 

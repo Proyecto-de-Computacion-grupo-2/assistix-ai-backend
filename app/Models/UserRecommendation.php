@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class UserRecommendation extends Model
 {
     use HasFactory;
+
     protected $table = 'user_recommendation';
     protected $primaryKey = 'id_user_recommendation';
 
@@ -16,7 +17,8 @@ class UserRecommendation extends Model
     {
         return $this->hasOne(Player::class, 'id_mundo_deportivo');
     }
-    public function user(): HasOne
+
+    public function league_users(): HasOne
     {
         return $this->hasOne(LeagueUser::class, 'id_user');
     }
