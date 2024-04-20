@@ -62,4 +62,5 @@ Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'getP
 Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayer']);
 Route::get('/players/next_prediction/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerNextPrediction']);
 Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerAbsences']);
+Route::get('/players/games/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerGames']);
 

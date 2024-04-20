@@ -102,6 +102,25 @@ class PlayerController extends Controller
         return response()->json($player->absences);
     }
 
+    /**
+     * Get all the games player by a player.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerGames($id) {
+        $player = Player::find($id);
+
+        if (!$player) {
+            return response()->json(['message' => 'Player not found'], 404);
+        }
+
+        if (!$player->games) {
+            return response()->json(['message' => 'No Games found for player'], 404);
+        }
+
+        return response()->json($player->games);
+    }
+
 
     /**
      * Retrieves all players currently marked as 'in the market' and their latest four game entries.
