@@ -12,7 +12,8 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    private function findPlayerOrFail($id) {
+    private function findPlayerOrFail($id)
+    {
         $player = Player::find($id);
         if (!$player) {
             return response()->json(['message' => 'Player not found'], 404);
@@ -39,7 +40,7 @@ class PlayerController extends Controller
      */
     public function getPlayer($id)
     {
-        $player =  $this->findPlayerOrFail($id);
+        $player = $this->findPlayerOrFail($id);
 
         if (!$player->leagueUser) {
             return response()->json(['message' => 'Associated league user not found'], 404);
@@ -74,7 +75,7 @@ class PlayerController extends Controller
      */
     public function getPlayerNextPrediction($id)
     {
-        $player =  $this->findPlayerOrFail($id);
+        $player = $this->findPlayerOrFail($id);
 
         if (!$player->predictions) {
             return response()->json(['message' => 'No predictions found for this player'], 404);
@@ -111,7 +112,7 @@ class PlayerController extends Controller
      */
     public function getPlayerGames($id)
     {
-        $player =  $this->findPlayerOrFail($id);
+        $player = $this->findPlayerOrFail($id);
 
         if (!$player->games) {
             return response()->json(['message' => 'No Games found for player'], 404);
@@ -128,7 +129,7 @@ class PlayerController extends Controller
      */
     public function getPlayerPointsPredictions($id)
     {
-        $player =  $this->findPlayerOrFail($id);
+        $player = $this->findPlayerOrFail($id);
 
         $games = $player->predictions()
             ->select('gameweek', 'point_prediction')
@@ -146,7 +147,7 @@ class PlayerController extends Controller
      */
     public function getPlayerHistoricValue($id)
     {
-        $player =  $this->findPlayerOrFail($id);
+        $player = $this->findPlayerOrFail($id);
 
         $predictions = $player->price_variations()
             ->select('id_mundo_deportivo', 'price_day', 'price', 'is_prediction')
@@ -174,7 +175,6 @@ class PlayerController extends Controller
             return response()->json(['message' => 'No players found in the market.'], 404);
         }
 
-        // Manually attach the latest four games to each player
         foreach ($players as $player) {
             $latestGames = $player->games()
                 ->orderByDesc('game_week')

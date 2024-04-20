@@ -15,7 +15,7 @@ class UserRecommendation extends Model
 
     public function player(): HasOne
     {
-        return $this->hasOne(Player::class, 'id_mundo_deportivo');
+        return $this->hasOne(Player::class, 'id_mundo_deportivo','id_mundo_deportivo');
     }
 
     public function league_users(): HasOne

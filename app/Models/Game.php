@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Game extends Model
 {
@@ -13,8 +15,8 @@ class Game extends Model
     protected $table = 'game';
     protected $primaryKey = 'id_game';
 
-    public function player(): HasOne
+    public function player(): BelongsTo
     {
-        return $this->hasOne(Player::class, 'id_mundo_deportivo');
+        return $this->belongsTo(Player::class, 'id_mundo_deportivo','id_mundo_deportivo');
     }
 }

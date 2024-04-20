@@ -21,6 +21,6 @@ class LeagueUser extends Model
 
     public function recommendations(): HasMany
     {
-        return $this->hasMany(UserRecommendation::class, 'id_mundo_deportivo');
+        return $this->hasMany(UserRecommendation::class, 'id_user');
     }
 }

@@ -70,4 +70,12 @@ class LeagueUserController extends Controller
 
     }
 
+    public function getRecommendationsLeagueUser($id) {
+        $league_user = LeagueUser::find($id);
+
+        $lu_recommendations = $league_user->recommendations()->select('id_mundo_deportivo','operation_type','gameweek','expected_value_percentage')->get();
+
+        return response()->json($lu_recommendations);
+    }
+
 }
