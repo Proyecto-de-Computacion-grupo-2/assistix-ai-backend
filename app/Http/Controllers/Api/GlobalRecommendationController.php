@@ -12,7 +12,7 @@ class GlobalRecommendationController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getGlobalRecommendationsGW(){
+    public function dashboard_lineup_best_team(){
         $recommendations = GlobalRecommendation::with(
             'player.predictions')
             ->orderBy('gameweek','desc')

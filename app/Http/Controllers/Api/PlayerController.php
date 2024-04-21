@@ -198,7 +198,7 @@ class PlayerController extends Controller
      * @param $id_user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function playersUser($id_user)
+    public function dashboard_lineup_user_team($id_user)
     {
         $players = Player::where('id_user', $id_user)->get(['id_mundo_deportivo', 'full_name', 'position', 'photo_body', 'photo_face']);
 

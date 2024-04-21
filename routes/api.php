@@ -18,9 +18,9 @@ Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerContro
 Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
 
 # Line up component.
-Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
-# todo get the max.puntos lineup.
-Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
+Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
+Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup_user_market_team']);
+Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'dashboard_lineup_best_team']);
 
 
 /**
