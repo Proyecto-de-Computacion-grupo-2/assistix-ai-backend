@@ -214,7 +214,10 @@ class PlayerController extends Controller
             $player->latest_game = $latestGame[0]['mixed'];
         }
 
-        return response()->json($players);
+        $sorted = $players->sortBy('position');
+
+
+        return response()->json($sorted);
     }
 
     /**
