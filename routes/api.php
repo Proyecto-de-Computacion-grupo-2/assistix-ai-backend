@@ -5,15 +5,21 @@ use Illuminate\Support\Facades\Route;
 /**
  * Dashboard page.
  */
+
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+
+# Points predictions component.
 Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PlayerController::class, 'playersValuePredictions']);
+
+# Value predictions component.
 Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerController::class, 'playersPointsPredictions']);
-# todo get the max.puntos lineup.
+
 # Stats component.
 Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
+
 # Line up component.
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
-
+# todo get the max.puntos lineup.
 Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
 
 

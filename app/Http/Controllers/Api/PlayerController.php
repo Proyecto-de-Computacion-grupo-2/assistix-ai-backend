@@ -122,7 +122,6 @@ class PlayerController extends Controller
         return response()->json($player->games);
     }
 
-
     /**
      * Get the three latest points predictions for a player.
      * @param $id
@@ -165,7 +164,6 @@ class PlayerController extends Controller
         return response()->json($response);
     }
 
-
     /**
      * Retrieves all players currently marked as 'in the market' and their latest four game entries.
      *
@@ -178,7 +176,7 @@ class PlayerController extends Controller
      */
     public function playerInMarket()
     {
-        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'is_in_market', 'sell_price', 'photo_body', 'photo_face']);
+        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'sell_price', 'photo_body', 'photo_face']);
 
         if ($players->isEmpty()) {
             return response()->json(['message' => 'No players found in the market.'], 404);
@@ -195,7 +193,6 @@ class PlayerController extends Controller
         return response()->json($players);
     }
 
-
     /**
      * Get all the players in a user team.
      * @param $id_user
@@ -203,10 +200,20 @@ class PlayerController extends Controller
      */
     public function playersUser($id_user)
     {
-        $players = Player::where('id_user', $id_user)->get();
+        $players = Player::where('id_user', $id_user)->get(['id_mundo_deportivo', 'full_name', 'position', 'photo_body', 'photo_face']);
+
         if (!$players) {
             return response()->json(['message' => 'Found no players in the market.'], 404);
         }
+
+        foreach ($players as $player) {
+            $latestGame = $player->games()
+                ->orderByDesc('game_week')
+                ->limit(1)
+                ->get(['mixed']);
+            $player->latest_game = $latestGame[0]['mixed'];
+        }
+
         return response()->json($players);
     }
 
