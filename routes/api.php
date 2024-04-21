@@ -39,7 +39,7 @@ Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerC
 /**
  * Shared endpoints between pages.
  */
-Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']); # todo, add the player basic infomration to paint everythign.
+Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
 Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']); # todo FINISH THIS ENDPOINT. "RECOMENDACIONES ASSISTIX AI"
 
 /**

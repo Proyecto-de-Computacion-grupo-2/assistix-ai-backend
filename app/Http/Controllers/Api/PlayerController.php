@@ -151,10 +151,18 @@ class PlayerController extends Controller
         $player = $this->findPlayerOrFail($id);
 
         $predictions = $player->price_variations()
-            ->select('id_mundo_deportivo', 'price_day', 'price', 'is_prediction')
+            ->select('price_day', 'price', 'is_prediction')
             ->get();
 
-        return response()->json($predictions);
+        $response = [
+            'id_mundo_deportivo' => $player->id_mundo_deportivo,
+            'full_name' => $player->full_name,
+            'position' => $player->position,
+            'photo_face' => $player->photo_face,
+            'predictions' => $predictions
+        ];
+
+        return response()->json($response);
     }
 
 
