@@ -17,4 +17,5 @@ class PredictionPointsController extends Controller
         }
         return $player_prediction;
     }
+
 }

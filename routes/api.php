@@ -5,15 +5,18 @@ use Illuminate\Support\Facades\Route;
 /**
  * Dashboard page.
  */
-Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']); # Manu task.
-Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
-Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
 # todo SHOW ALL THE PRICE VARIATIONS IN THE FRONT END, IF A PLAYER WILL GET UP OR LOW IN VALUE. SUBSSTRACT THE LAST PREDICTED VALUE WITH THE LATEST REAL ONE.
 Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
-# todo SHOW ALL THE POINTS PREDICTIONS FOR THE NEXT GAMEWEEK IN THE FRONT END
-Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points']);
+Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerController::class, 'playersPointsPredictions']);
 # todo get the max.puntos lineup.
+# Stats component.
+Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
+# Line up component.
+Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
+
+Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
+
 
 /**
  * Market page.

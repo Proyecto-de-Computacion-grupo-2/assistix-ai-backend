@@ -200,4 +200,28 @@ class PlayerController extends Controller
         }
         return response()->json($players);
     }
+
+    /**
+     * Get the point predictions for all the players in the next game week.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function playersPointsPredictions()
+    {
+        $players = Player::with('predictions')
+            ->get(['id_mundo_deportivo', 'full_name', 'position', 'photo_body', 'photo_face']);
+
+        $transformed = $players->map(function ($player) {
+            $latestPredictionPoints = $player->predictions->first() ? $player->predictions->first()->point_prediction : null;
+
+            return [
+                'id_mundo_deportivo' => $player->id_mundo_deportivo,
+                'full_name' => $player->full_name,
+                'position' => $player->position,
+                'photo_body' => $player->photo_body,
+                'photo_face' => $player->photo_face,
+                'prediction' => $latestPredictionPoints
+            ];
+        });
+        return response()->json($transformed);
+    }
 }
