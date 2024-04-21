@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- * Dashboard page.
+ * ------- Dashboard page. -------
  */
 
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
@@ -21,7 +21,6 @@ Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'g
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
 Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup_user_market_team']);
 Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'dashboard_lineup_best_team']);
-
 
 /**
  * Market page.
@@ -46,7 +45,7 @@ Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerC
  * Shared endpoints between pages.
  */
 Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
-Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']); # todo FINISH THIS ENDPOINT. "RECOMENDACIONES ASSISTIX AI"
+Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']);
 
 /**
  * League users endpoint.
