@@ -3,32 +3,17 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- * Global recommendation endpoint.
- */
-Route::get('/gr/{gw}', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']);
-
-/**
- * League users endpoint.
- */
-Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUsersRankingTable']);
-Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
-Route::get('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']); # Change this to post.
-Route::get('/users_info/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUser']);
-
-/**
- * Prediction points.
- */
-Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
-
-/**
- *  --------------------------------------------------------------- Custom Endpoints ---------------------------------------------------------------
- */
-
-/**
  * Dashboard page.
  */
+Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'getGlobalRecommendationsGW']); # Manu task.
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'playersUser']);
-Route::get('/magic', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
+Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
+Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+# todo SHOW ALL THE PRICE VARIATIONS IN THE FRONT END, IF A PLAYER WILL GET UP OR LOW IN VALUE. SUBSSTRACT THE LAST PREDICTED VALUE WITH THE LATEST REAL ONE.
+Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+# todo SHOW ALL THE POINTS PREDICTIONS FOR THE NEXT GAMEWEEK IN THE FRONT END
+Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points']);
+# todo get the max.puntos lineup.
 
 /**
  * Market page.
@@ -52,6 +37,12 @@ Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerC
 /**
  * Shared endpoints between pages.
  */
-Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
-Route::get('/ur/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']);
+Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']); # todo, add the player basic infomration to paint everythign.
+Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']); # todo FINISH THIS ENDPOINT. "RECOMENDACIONES ASSISTIX AI"
 
+/**
+ * League users endpoint.
+ */
+Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUsersRankingTable']);
+Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
+Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']);

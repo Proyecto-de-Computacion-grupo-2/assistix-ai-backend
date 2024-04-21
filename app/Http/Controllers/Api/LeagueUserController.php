@@ -14,7 +14,7 @@ class LeagueUserController extends Controller
      */
     public function getUsersRankingTable()
     {
-        $user = LeagueUser::select('id_user','team_name', 'team_points', 'team_average', 'team_value', 'team_players')->get();
+        $user = LeagueUser::select('id_user', 'team_name', 'team_points')->get();
         if ($user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
@@ -55,25 +55,15 @@ class LeagueUserController extends Controller
     }
 
     /**
-     * Get all the information for a user.
+     * Get all the recommendations for a user.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-
-    public function getUser($id)
+    public function getRecommendationsLeagueUser($id)
     {
-        $user = LeagueUser::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-        return response()->json($user);
-
-    }
-
-    public function getRecommendationsLeagueUser($id) {
         $league_user = LeagueUser::find($id);
 
-        $lu_recommendations = $league_user->recommendations()->select('id_mundo_deportivo','operation_type','gameweek','expected_value_percentage')->get();
+        $lu_recommendations = $league_user->recommendations()->select('id_mundo_deportivo', 'operation_type', 'gameweek', 'expected_value_percentage')->get();
 
         return response()->json($lu_recommendations);
     }
