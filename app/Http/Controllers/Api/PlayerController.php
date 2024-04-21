@@ -217,7 +217,7 @@ class PlayerController extends Controller
         $sorted = $players->sortBy('position');
 
 
-        return response()->json($sorted);
+        return response()->json(array_values($sorted->toArray()));
     }
 
     /**
