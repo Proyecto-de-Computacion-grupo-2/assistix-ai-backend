@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Player;
+use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
 {
@@ -223,5 +224,38 @@ class PlayerController extends Controller
             ];
         });
         return response()->json($transformed);
+    }
+
+    /**
+     * Get the players percentage change between the latest prediction and the latest real price.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function playersValuePredictions()
+    {
+        $players = Player::select([
+            'id_mundo_deportivo',
+            'full_name',
+            'player_value',
+            'photo_face',
+            DB::raw("(SELECT price FROM price_variation WHERE price_variation.id_mundo_deportivo = player.id_mundo_deportivo AND is_prediction = true ORDER BY price_day DESC LIMIT 1) as latest_prediction_price"),
+            DB::raw("(SELECT price FROM price_variation WHERE price_variation.id_mundo_deportivo = player.id_mundo_deportivo AND is_prediction = false ORDER BY price_day DESC LIMIT 1) as latest_real_price"),
+        ])->get();
+
+        $transformed = $players->map(function ($player) {
+            $priceDifference = $player->latest_prediction_price - $player->latest_real_price;
+            $percentageChange = intval(($priceDifference / $player->latest_real_price) * 100);
+            return [
+                'id_mundo_deportivo' => $player->id_mundo_deportivo,
+                'full_name' => $player->full_name,
+                'player_value' => $player->player_value,
+                'photo_face' => $player->photo_face,
+                'latest_prediction' => $player->latest_prediction_price,
+                'percentage_change' => $percentageChange
+            ];
+        });
+
+        $sorted = $transformed->sortByDesc('percentage_change');
+
+        return response()->json(array_values($sorted->toArray()));
     }
 }

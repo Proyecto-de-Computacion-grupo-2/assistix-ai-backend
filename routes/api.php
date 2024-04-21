@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Route;
  * Dashboard page.
  */
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
-# todo SHOW ALL THE PRICE VARIATIONS IN THE FRONT END, IF A PLAYER WILL GET UP OR LOW IN VALUE. SUBSSTRACT THE LAST PREDICTED VALUE WITH THE LATEST REAL ONE.
-Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PlayerController::class, 'playersValuePredictions']);
 Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerController::class, 'playersPointsPredictions']);
 # todo get the max.puntos lineup.
 # Stats component.
