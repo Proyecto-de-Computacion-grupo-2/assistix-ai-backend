@@ -122,7 +122,77 @@ class PlayerController extends Controller
             return response()->json(['message' => 'No Games found for player'], 404);
         }
 
-        return response()->json($player->games);
+        $response = $player->games->map(function ($game) {
+            return [
+                "game_week" => $game->game_week,
+                "team" => $game->team,
+                "opposing_team" => $game->opposing_team,
+                "mixed" => $game->mixed,
+                "as_score" => $game->as_score,
+                "marca_score" => $game->marca_score,
+                "mundo_deportivo_score" => $game->mundo_deportivo_score,
+                "sofa_score" => $game->sofa_score,
+                "yellow_card" => $game->yellow_card,
+                "double_yellow_card" => $game->double_yellow_card,
+                "red_card" => $game->red_card,
+                "total_passes" => $game->total_passes,
+                "accurate_passes" => $game->accurate_passes,
+                "total_long_balls" => $game->total_long_balls,
+                "accurate_long_balls" => $game->accurate_long_balls,
+                "total_cross" => $game->total_cross,
+                "accurate_cross" => $game->accurate_cross,
+                "total_clearance" => $game->total_clearance,
+                "clearance_off_line" => $game->clearance_off_line,
+                "aerial_lost" => $game->aerial_lost,
+                "aerial_won" => $game->aerial_won,
+                "duel_lost" => $game->duel_lost,
+                "duel_won" => $game->duel_won,
+                "dispossessed" => $game->dispossessed,
+                "challenge_lost" => $game->challenge_lost,
+                "total_contest" => $game->total_contest,
+                "won_contest" => $game->won_contest,
+                "good_high_claim" => $game->good_high_claim,
+                "punches" => $game->punches,
+                "error_lead_to_a_shot" => $game->error_lead_to_a_shot,
+                "error_lead_to_a_goal" => $game->error_lead_to_a_goal,
+                "shot_off_target" => $game->shot_off_target,
+                "on_target_scoring_attempt" => $game->on_target_scoring_attempt,
+                "hit_woodwork" => $game->hit_woodwork,
+                "blocked_scoring_attempt" => $game->blocked_scoring_attempt,
+                "outfielder_block" => $game->outfielder_block,
+                "big_chance_created" => $game->big_chance_created,
+                "big_chance_missed" => $game->big_chance_missed,
+                "penalty_conceded" => $game->penalty_conceded,
+                "penalty_won" => $game->penalty_won,
+                "penalty_miss" => $game->penalty_miss,
+                "penalty_save" => $game->penalty_save,
+                "goals" => $game->goals,
+                "own_goals" => $game->own_goals,
+                "saved_shots_from_inside_the_box" => $game->saved_shots_from_inside_the_box,
+                "saves" => $game->saves,
+                "goal_assist" => $game->goal_assist,
+                "goals_against" => $game->goals_against,
+                "goals_avoided" => $game->goals_avoided,
+                "interception_won" => $game->interception_won,
+                "total_interceptions" => $game->total_interceptions,
+                "total_keeper_sweeper" => $game->total_keeper_sweeper,
+                "accurate_keeper_sweeper" => $game->accurate_keeper_sweeper,
+                "total_tackle" => $game->total_tackle,
+                "was_fouled" => $game->was_fouled,
+                "fouls" => $game->fouls,
+                "total_offside" => $game->total_offside,
+                "minutes_played" => $game->minutes_played,
+                "touches" => $game->touches,
+                "last_man_tackle" => $game->last_man_tackle,
+                "possession_lost_control" => $game->possession_lost_control,
+                "expected_goals" => $game->expected_goals,
+                "goals_prevented" => $game->goals_prevented,
+                "key_pass" => $game->key_pass,
+                "expected_assists" => $game->expected_assists
+            ];
+        });
+
+        return response()->json($response);
     }
 
     /**
