@@ -30,7 +30,10 @@ class PlayerController extends Controller
     public function getPlayers()
     {
         $players = Player::all('id_mundo_deportivo', 'full_name', 'position', 'player_value', 'photo_body', 'photo_face', 'season_23_24');
-        return response()->json($players);
+
+        $sorted = $players->sortByDesc('season_23_24');
+
+        return response()->json(array_values($sorted->toArray()));
     }
 
     /**
