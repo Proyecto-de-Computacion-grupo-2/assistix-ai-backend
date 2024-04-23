@@ -226,6 +226,22 @@ class PlayerController extends Controller
             ->select('price_day', 'price', 'is_prediction')
             ->get();
 
+        return response()->json($predictions);
+    }
+
+    /**
+     * Get all the past price values for a player.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getPlayerHistoricValueMarket($id)
+    {
+        $player = $this->findPlayerOrFail($id);
+
+        $predictions = $player->price_variations()
+            ->select('price_day', 'price', 'is_prediction')
+            ->get();
+
         $response = [
             'id_mundo_deportivo' => $player->id_mundo_deportivo,
             'full_name' => $player->full_name,
@@ -236,6 +252,7 @@ class PlayerController extends Controller
 
         return response()->json($response);
     }
+
 
     /**
      * Retrieves all players currently marked as 'in the market' and their latest four game entries.

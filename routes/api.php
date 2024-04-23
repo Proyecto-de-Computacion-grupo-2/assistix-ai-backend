@@ -26,6 +26,8 @@ Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommenda
  * Market page.
  */
 Route::get('/players_market', [\App\Http\Controllers\Api\PlayerController::class, 'playerInMarket']);
+Route::get('/players/market/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValueMarket']);
+
 
 /**
  *  Players page.
@@ -40,11 +42,11 @@ Route::get('/players/next_prediction/{id}', [\App\Http\Controllers\Api\PlayerCon
 Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerAbsences']);
 Route::get('/players/games/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerGames']);
 Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerPointsPredictions']);
+Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
 
 /**
  * Shared endpoints between pages.
  */
-Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
 Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getRecommendationsLeagueUser']);
 
 /**
