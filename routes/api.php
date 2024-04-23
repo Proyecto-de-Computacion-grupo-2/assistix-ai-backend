@@ -53,3 +53,5 @@ Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUs
 Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUsersRankingTable']);
 Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
 Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']);
+Route::get('/admin', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserAdminInfo']);
+Route::get('/admin/{id}/{active}', [\App\Http\Controllers\Api\LeagueUserController::class, 'activateUser']);

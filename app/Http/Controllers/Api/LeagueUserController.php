@@ -90,4 +90,42 @@ class LeagueUserController extends Controller
         return response()->json($transformed);
     }
 
+    /**
+     * Get the user admin info.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserAdminInfo()
+    {
+        $league_user = LeagueUser::select(['id_user', 'email', 'team_name', 'active'])->get();
+        if (!$league_user) {
+            return response()->json(['message' => 'Users not found'], 404);
+        }
+        $sorted = $league_user->sortBy('id_user');
+        $sorted->shift(); // Remove the first element from the collection.
+
+        return response()->json(array_values($sorted->toArray()));
+    }
+
+    /**
+     * Activate or deactivate a user.
+     * @param $id
+     * @param $active
+     * @return mixed
+     */
+    public function activateUser($id, $active)
+    {
+        $user = LeagueUser::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        if ($active == 'true') {
+            $active = 1;
+        } else {
+            $active = 0;
+        }
+
+        $user->active = $active;
+        return $user->save();
+    }
 }
