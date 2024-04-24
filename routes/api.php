@@ -18,6 +18,8 @@ Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerContro
 Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
 
 # Line up component.
+#
+# todo Join them
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
 Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup_user_market_team']);
 Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommendationController::class, 'dashboard_lineup_best_team']);
@@ -56,3 +58,7 @@ Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class
 Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']);
 Route::get('/admin', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserAdminInfo']);
 Route::get('/admin/{id}/{active}', [\App\Http\Controllers\Api\LeagueUserController::class, 'activateUser']);
+
+
+
+Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
