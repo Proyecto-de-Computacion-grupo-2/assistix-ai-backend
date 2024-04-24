@@ -61,9 +61,7 @@ class LeagueUserController extends Controller
      */
     public function getRecommendationsLeagueUser($id)
     {
-        $league_user = LeagueUser::with(['recommendations.player.games' => function ($query) {
-            $query->orderBy('game_week', 'desc')->take(3);
-        }])->where('id_user', $id)->get();
+        $league_user = LeagueUser::with(['recommendations.player'])->where('id_user', $id)->get();
 
         if ($league_user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
@@ -74,15 +72,12 @@ class LeagueUserController extends Controller
                 return [
                     'id_mundo_deportivo' => $recommendation->id_mundo_deportivo,
                     'full_name' => $recommendation->player->full_name,
-                    'operation_type' => $recommendation->operation_type,
-                    'expected_value_percentage' => $recommendation->expected_value_percentage,
+                    'player_value' => $recommendation->player->player_value,
+                    'position' => $recommendation->player->position,
                     'photo_face' => $recommendation->player->photo_face,
-                    'games' => $recommendation->player->games->map(function ($game) {
-                        return [
-                            'game_week' => $game->game_week,
-                            'mixed' => $game->mixed,
-                        ];
-                    }),
+                    'season_23_24' => $recommendation->player->season_23_24,
+                    'operation_type' => $recommendation->operation_type,
+                    'expected_value_percentage' => $recommendation->expected_value_percentage
                 ];
             });
         })->flatten(1);
