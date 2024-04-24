@@ -267,7 +267,7 @@ class PlayerController extends Controller
 
     public function playerInMarket()
     {
-        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'sell_price', 'photo_face', 'season_23_24','is_in_market']);
+        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name','player_value' ,'position','photo_face', 'season_23_24','sell_price','is_in_market']);
 
         if ($players->isEmpty()) {
             return response()->json(['message' => 'No players found in the market.'], 404);
