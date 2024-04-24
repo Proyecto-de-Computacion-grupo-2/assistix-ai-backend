@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class UserRecommendationController extends Controller
 {
-    public function dashboard_lineup_user_market_team($id_user)
+    public function dashboard_lineup($id_user)
     {
-        $teamLineup = $this->getUserRecommendations($id_user, 'Titular');
-        $marketLineup = $this->getUserRecommendations($id_user, 'Titular Mercado');
-        $fantasyLineup = $this->dashboard_lineup_best_team();
+        $teamLineup = $this->get_user_recommendations($id_user, 'Titular');
+        $marketLineup = $this->get_user_recommendations($id_user, 'Titular Mercado');
+        $fantasyLineup = $this->get_fantasy_team();
 
         $response = [
             'team-lineup' => $teamLineup,
@@ -24,22 +24,21 @@ class UserRecommendationController extends Controller
         return response()->json($response);
     }
 
-    private function getUserRecommendations($id_user, $operation_type)
+    private function get_user_recommendations($id_user, $operation_type)
     {
         $user_recommendations = UserRecommendation::with('player.predictions')
             ->where('id_user', $id_user)
             ->where('operation_type', '=', $operation_type)
             ->get();
 
-        return $user_recommendations->map(function ($recommendation) {
-            return $this->transformRecommendation($recommendation);
-        });
+        return $this->formatResponseByPosition($user_recommendations);
     }
 
-    private function dashboard_lineup_best_team(){
+    private function get_fantasy_team()
+    {
         $recommendations = GlobalRecommendation::with(
             'player.predictions')
-            ->orderBy('gameweek','desc')
+            ->orderBy('gameweek', 'desc')
             ->limit(11)
             ->get();
 
@@ -47,12 +46,40 @@ class UserRecommendationController extends Controller
             return response()->json(['message' => 'No games found for this player'], 404);
         }
 
-        return $recommendations->map(function ($recommendation) {
-            return $this->transformRecommendation($recommendation);
-        });
+        return $this->formatResponseByPosition($recommendations);
     }
 
-    private function transformRecommendation($recommendation)
+    private function formatResponseByPosition($recommendations)
+    {
+        $grouped_recommendations = [
+            'goalkeeper' => [],
+            'defense' => [],
+            'midfield' => [],
+            'attack' => [],
+        ];
+
+        foreach ($recommendations as $recommendation) {
+            $transformed_recommendation = $this->format_response($recommendation);
+            switch ($recommendation->player->position) {
+                case 1:
+                    $grouped_recommendations['goalkeeper'] = $transformed_recommendation;
+                    break;
+                case 2:
+                    $grouped_recommendations['defense'][] = $transformed_recommendation;
+                    break;
+                case 3:
+                    $grouped_recommendations['midfield'][] = $transformed_recommendation;
+                    break;
+                case 4:
+                    $grouped_recommendations['attack'][] = $transformed_recommendation;
+                    break;
+            }
+        }
+
+        return $grouped_recommendations;
+    }
+
+    private function format_response($recommendation)
     {
         return [
             'id_mundo_deportivo' => $recommendation->id_mundo_deportivo,
@@ -63,5 +90,6 @@ class UserRecommendationController extends Controller
             'prediction' => $recommendation->player->predictions[0]->point_prediction,
         ];
     }
+
 
 }

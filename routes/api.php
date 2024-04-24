@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 /**
  * ------- Dashboard page. -------
  */
-
 Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
 
 # Points predictions component.
@@ -19,7 +18,7 @@ Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'g
 
 # Line up component.
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
-Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup_user_market_team']);
+Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup']);
 
 /**
  * Market page.
