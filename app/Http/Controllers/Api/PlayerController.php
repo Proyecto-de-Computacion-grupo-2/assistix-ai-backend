@@ -91,7 +91,6 @@ class PlayerController extends Controller
         $response = [
             'id_mundo_deportivo' => $prediction->id_mundo_deportivo,
             'gameweek' => $prediction->gameweek,
-            'date_prediction' => $prediction->date_prediction,
             'point_prediction' => $prediction->point_prediction
         ];
 
