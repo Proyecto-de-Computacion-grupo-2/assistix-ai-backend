@@ -264,20 +264,13 @@ class PlayerController extends Controller
      * @return \Illuminate\Http\JsonResponse Returns a JSON response with each player's information.
      * If no players are found in the market, a 404 response is returned with an error message.
      */
+
     public function playerInMarket()
     {
-        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'sell_price', 'photo_body', 'photo_face']);
+        $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'position', 'sell_price', 'photo_face', 'season_23_24','is_in_market']);
 
         if ($players->isEmpty()) {
             return response()->json(['message' => 'No players found in the market.'], 404);
-        }
-
-        foreach ($players as $player) {
-            $latestGames = $player->games()
-                ->orderByDesc('game_week')
-                ->limit(4)
-                ->get(['game_week', 'mixed']);
-            $player->latest_games = $latestGames;
         }
 
         return response()->json($players);
@@ -305,7 +298,6 @@ class PlayerController extends Controller
         }
 
         $sorted = $players->sortBy('position');
-
 
         return response()->json(array_values($sorted->toArray()));
     }

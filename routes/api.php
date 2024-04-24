@@ -25,9 +25,8 @@ Route::get('/global_recommendation', [\App\Http\Controllers\Api\GlobalRecommenda
 /**
  * Market page.
  */
-Route::get('/players_market', [\App\Http\Controllers\Api\PlayerController::class, 'playerInMarket']);
 Route::get('/players/market/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValueMarket']);
-
+Route::get('/players_market', [\App\Http\Controllers\Api\PlayerController::class, 'playerInMarket']);
 
 /**
  *  Players page.
