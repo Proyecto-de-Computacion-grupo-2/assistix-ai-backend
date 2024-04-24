@@ -348,7 +348,9 @@ class PlayerController extends Controller
             'id_mundo_deportivo',
             'full_name',
             'player_value',
+            'position',
             'photo_face',
+            'season_23_24',
             DB::raw("(SELECT price FROM price_variation WHERE price_variation.id_mundo_deportivo = player.id_mundo_deportivo AND is_prediction = true ORDER BY price_day DESC LIMIT 1) as latest_prediction_price"),
             DB::raw("(SELECT price FROM price_variation WHERE price_variation.id_mundo_deportivo = player.id_mundo_deportivo AND is_prediction = false ORDER BY price_day DESC LIMIT 1) as latest_real_price"),
         ])->get();
@@ -360,7 +362,9 @@ class PlayerController extends Controller
                 'id_mundo_deportivo' => $player->id_mundo_deportivo,
                 'full_name' => $player->full_name,
                 'player_value' => $player->player_value,
+                'position' => $player->position,
                 'photo_face' => $player->photo_face,
+                'season_23_24' => $player->season_23_24,
                 'latest_prediction' => $player->latest_prediction_price,
                 'percentage_change' => $percentageChange
             ];
