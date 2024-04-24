@@ -317,7 +317,7 @@ class PlayerController extends Controller
     public function playersPointsPredictions()
     {
         $players = Player::with('predictions')
-            ->get(['id_mundo_deportivo', 'full_name','player_value','position', 'photo_body', 'photo_face']);
+            ->get(['id_mundo_deportivo', 'full_name','player_value','position', 'photo_face','season_23_24']);
 
         $transformed = $players->map(function ($player) {
             $latestPredictionPoints = $player->predictions->first() ? $player->predictions->first()->point_prediction : null;
@@ -327,12 +327,15 @@ class PlayerController extends Controller
                 'full_name' => $player->full_name,
                 'player_value' => $player->player_value,
                 'position' => $player->position,
-                'photo_body' => $player->photo_body,
                 'photo_face' => $player->photo_face,
+                'season_23_24' => $player->season_23_24,
                 'point_prediction' => $latestPredictionPoints
             ];
         });
-        return response()->json($transformed);
+
+        $sorted = $transformed->sortByDesc('point_prediction');
+
+        return response()->json(array_values($sorted->toArray()));
     }
 
     /**
