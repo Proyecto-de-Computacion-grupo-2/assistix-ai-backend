@@ -12,12 +12,14 @@ class LeagueUserController extends Controller
      * Get the Users table in the frontend.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUsersRankingTable()
+    public function get_users_ranking_table()
     {
         $user = LeagueUser::select('id_user', 'team_name', 'team_points')->get();
         if ($user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
+        $user = $user->sortBy('id_user');
+        $user->shift();
         return response()->json($user);
     }
 

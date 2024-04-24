@@ -14,7 +14,7 @@ class GameController extends Controller
      * Return the 3 best performing players on the latest game week.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getBestThreePlayers()
+    public function dashboard_get_three_best_players()
     {
         $get_best_player_in_the_last_gameweek = Game::with(['player:id_mundo_deportivo,full_name,photo_body,photo_face'])
             ->select('id_mundo_deportivo', 'game_week', 'mixed')

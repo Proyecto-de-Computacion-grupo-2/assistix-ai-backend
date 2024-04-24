@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * ------- Dashboard page. -------
  */
-Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']);
+//Route::get('/player/pp/{id_player}/{gameweek}', [\App\Http\Controllers\Api\PredictionPointsController::class, 'prediction_points_for_a_player_game_week']); NOT USED FOR THE MOMENT
 
 # Points predictions component.
 Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PlayerController::class, 'playersValuePredictions']);
@@ -14,7 +14,7 @@ Route::get('/players_prediction/value', [\App\Http\Controllers\Api\PlayerControl
 Route::get('/players_prediction/points', [\App\Http\Controllers\Api\PlayerController::class, 'playersPointsPredictions']);
 
 # Stats component.
-Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'getBestThreePlayers']);
+Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'dashboard_get_three_best_players']);
 
 # Line up component.
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
@@ -49,12 +49,9 @@ Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUs
 /**
  * League users endpoint.
  */
-Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUsersRankingTable']);
+Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'get_users_ranking_table']);
 Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
 Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']);
 Route::get('/admin', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserAdminInfo']);
 Route::get('/admin/{id}/{active}', [\App\Http\Controllers\Api\LeagueUserController::class, 'activateUser']);
-
-
-
 Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
