@@ -42,7 +42,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayer($id)
+    public function player_id_get_player_basic_info($id)
     {
         $player = $this->findPlayerOrFail($id);
 
@@ -61,9 +61,10 @@ class PlayerController extends Controller
 
         $response = [
             'id_mundo_deportivo' => $player->id_mundo_deportivo,
+            'full_name' => $player->full_name,
+            'player_value' => $player->player_value,
             'photo_body' => $player->photo_body,
             'photo_face' => $player->photo_face,
-            'full_name' => $player->full_name,
             'position' => $player->position,
             'user_name' => $player->leagueUser->team_name,
             'team' => $player_games->team
@@ -77,7 +78,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerNextPrediction($id)
+    public function player_id_get_player_next_prediction($id)
     {
         $player = $this->findPlayerOrFail($id);
 
@@ -85,7 +86,7 @@ class PlayerController extends Controller
             return response()->json(['message' => 'No predictions found for this player'], 404);
         }
 
-        $prediction = $player->predictions->last();
+        $prediction = $player->predictions->first();
 
         $response = [
             'id_mundo_deportivo' => $prediction->id_mundo_deportivo,
