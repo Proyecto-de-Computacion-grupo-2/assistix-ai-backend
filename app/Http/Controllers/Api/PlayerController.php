@@ -198,21 +198,21 @@ class PlayerController extends Controller
     }
 
     /**
-     * Get the three latest points predictions for a player.
+     * Get the last three predictions for a player.
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerPointsPredictions($id)
+    public function player_id_get_player_streak($id)
     {
         $player = $this->findPlayerOrFail($id);
 
-        $games = $player->predictions()
-            ->select('gameweek', 'point_prediction')
-            ->orderBy('gameweek', 'desc')
+        $games_2 = $player->games()
+            ->select('game_week', 'mixed')
+            ->orderBy('game_week', 'desc')
             ->limit(3)
             ->get();
 
-        return response()->json($games);
+        return response()->json($games_2);
     }
 
     /**
@@ -220,7 +220,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerHistoricValue($id)
+    public function player_id_get_player_historic_values($id)
     {
         $player = $this->findPlayerOrFail($id);
 
