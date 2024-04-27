@@ -14,12 +14,14 @@ class LeagueUserController extends Controller
      */
     public function get_users_ranking_table()
     {
-        $user = LeagueUser::select('id_user', 'team_name', 'team_points', 'team_value')->get();
+        $user = LeagueUser::select('id_user', 'team_name', 'team_points', 'team_value')
+            ->where('id_user', '!=', 1010)
+            ->orderBy('team_points', 'desc')
+            ->get();
+
         if ($user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
-        $user = $user->sortBy('id_user');
-        $user->shift();
         return response()->json($user);
     }
 
