@@ -36,9 +36,9 @@ Route::get('/players', [\App\Http\Controllers\Api\PlayerController::class, 'getP
  */
 Route::get('/players/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'player_id_get_player_basic_info']);
 Route::get('/players/next_prediction/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'player_id_get_player_next_prediction']);
-Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerAbsences']);
-Route::get('/players/games/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerGames']);
+Route::get('/players/absence/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'player_id_get_player_absences']);
 Route::get('/players/point_predictions/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerPointsPredictions']);
+Route::get('/players/games/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'player_id_get_player_games']);
 Route::get('/players/value/{id}', [\App\Http\Controllers\Api\PlayerController::class, 'getPlayerHistoricValue']);
 
 /**

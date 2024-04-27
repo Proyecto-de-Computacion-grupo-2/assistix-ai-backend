@@ -102,7 +102,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerAbsences($id)
+    public function player_id_get_player_absences($id)
     {
         $player = $this->findPlayerOrFail($id);
 
@@ -114,7 +114,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerGames($id)
+    public function player_id_get_player_games($id)
     {
         $player = $this->findPlayerOrFail($id);
 
@@ -192,7 +192,9 @@ class PlayerController extends Controller
             ];
         });
 
-        return response()->json($response);
+        $sorted = $response->sortByDesc('game_week');
+
+        return response()->json(array_values($sorted->toArray()));
     }
 
     /**
@@ -223,7 +225,8 @@ class PlayerController extends Controller
         $player = $this->findPlayerOrFail($id);
 
         $predictions = $player->price_variations()
-            ->select('price_day', 'price', 'is_prediction')
+            ->select('price_day', 'price')
+            ->where('is_prediction', false)
             ->get();
 
         return response()->json($predictions);
