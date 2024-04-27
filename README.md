@@ -21,8 +21,14 @@ composer install
 ### Step 2: Establish Database Connection
 You'll need to create an SSH tunnel to the remote database from your local machine. Keep this terminal session open for the duration of your work:
 
+Linux
 ```bash
 sudo ssh -L 13306:localhost:3306 -p 35007 ubuntu@195.235.211.197 -N
+```
+
+Windows:
+```bash
+ssh -L 13306:localhost:3306 -p 35007 ubuntu@195.235.211.197 -N
 ```
 
 ### Step 3: Set Up Environment Variables
