@@ -11,33 +11,34 @@ class UserRecommendationController extends Controller
 {
     public function dashboard_lineup($id_user)
     {
-        $teamLineup = $this->get_user_recommendations($id_user, 'Titular');
-        $marketLineup = $this->get_user_recommendations($id_user, 'Titular Mercado');
-        $fantasyLineup = $this->get_fantasy_team();
+        $teamLineup = $this->get_user_recommendations($id_user, 'Titular', 'team-lineup');
+        $marketLineup = $this->get_user_recommendations($id_user, 'Titular Mercado', 'market-lineup');
+        $fantasyLineup = $this->get_fantasy_team('fantasy-lineup');
 
         $response = [
-            'team-lineup' => $teamLineup,
-            'market-lineup' => $marketLineup,
-            'fantasy-lineup' => $fantasyLineup,
+            $teamLineup,
+            $marketLineup,
+            $fantasyLineup,
         ];
 
         return response()->json($response);
     }
 
-    private function get_user_recommendations($id_user, $operation_type)
+    private function get_user_recommendations($id_user, $operation_type, $lineup_type)
     {
         $user_recommendations = UserRecommendation::with('player.predictions')
             ->where('id_user', $id_user)
             ->where('operation_type', '=', $operation_type)
             ->get();
 
-        return $this->formatResponseByPosition($user_recommendations);
+        return $this->formatResponseByPosition($user_recommendations, $lineup_type);
     }
 
-    private function get_fantasy_team()
+    private function get_fantasy_team($lineup_type)
     {
         $recommendations = GlobalRecommendation::with(
-            'player.predictions')
+            'player.predictions'
+        )
             ->orderBy('gameweek', 'desc')
             ->limit(11)
             ->get();
@@ -46,12 +47,13 @@ class UserRecommendationController extends Controller
             return response()->json(['message' => 'No games found for this player'], 404);
         }
 
-        return $this->formatResponseByPosition($recommendations);
+        return $this->formatResponseByPosition($recommendations, $lineup_type);
     }
 
-    private function formatResponseByPosition($recommendations)
+    private function formatResponseByPosition($recommendations, $lineup_type)
     {
         $grouped_recommendations = [
+            'type' => $lineup_type,
             'goalkeeper' => [],
             'defense' => [],
             'midfield' => [],
@@ -88,6 +90,7 @@ class UserRecommendationController extends Controller
             'photo_face' => $recommendation->player->photo_face,
             'photo_body' => $recommendation->player->photo_body,
             'prediction' => $recommendation->player->predictions[0]->point_prediction,
+            'player_value' => $recommendation->player->player_value
         ];
     }
 
