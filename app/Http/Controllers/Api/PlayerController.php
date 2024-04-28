@@ -286,7 +286,7 @@ class PlayerController extends Controller
      */
     public function dashboard_lineup_user_team($id_user)
     {
-        $players = Player::where('id_user', $id_user)->get(['id_mundo_deportivo', 'full_name', 'position', 'photo_body', 'photo_face']);
+        $players = Player::where('id_user', $id_user)->get(['id_mundo_deportivo', 'full_name', 'position', 'photo_body', 'photo_face', 'player_value']);
 
         if (!$players) {
             return response()->json(['message' => 'Found no players in the market.'], 404);

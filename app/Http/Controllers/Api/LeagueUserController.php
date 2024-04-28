@@ -14,12 +14,14 @@ class LeagueUserController extends Controller
      */
     public function get_users_ranking_table()
     {
-        $user = LeagueUser::select('id_user', 'team_name', 'team_points')->get();
+        $user = LeagueUser::select('id_user', 'team_name', 'team_points', 'team_value')
+            ->where('id_user', '!=', 1010)
+            ->orderBy('team_points', 'desc')
+            ->get();
+
         if ($user->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
-        $user = $user->sortBy('id_user');
-        $user->shift();
         return response()->json($user);
     }
 
@@ -30,7 +32,7 @@ class LeagueUserController extends Controller
      */
     public function getUserMoneyDetails($id)
     {
-        $league_user = LeagueUser::find($id, ['id_user', 'team_name','current_balance', 'future_balance', 'maximum_debt', 'team_points']);
+        $league_user = LeagueUser::find($id, ['id_user', 'team_name', 'current_balance', 'future_balance', 'maximum_debt', 'team_points']);
         if (!$league_user) {
             return response()->json(['message' => 'Player not found'], 404);
         }
