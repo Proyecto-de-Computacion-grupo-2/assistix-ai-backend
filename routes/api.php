@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 /**
+ * ------- Layout page. -------
+ */
+Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
+
+/**
  * ------- Dashboard page. -------
  */
 # Points predictions component.
@@ -17,6 +22,9 @@ Route::get('/players_best', [\App\Http\Controllers\Api\GameController::class, 'd
 # Line up component.
 Route::get('/players_user/{id_user}', [\App\Http\Controllers\Api\PlayerController::class, 'dashboard_lineup_user_team']);
 Route::get('/user_recommendation/lineup/{id_user}', [\App\Http\Controllers\Api\UserRecommendationController::class, 'dashboard_lineup']);
+
+# Standing component.
+Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'get_users_ranking_table']);
 
 /**
  * Market page.
@@ -47,9 +55,12 @@ Route::get('/user_recommendation/{id_user}', [\App\Http\Controllers\Api\LeagueUs
 /**
  * League users endpoint.
  */
-Route::get('/users_table', [\App\Http\Controllers\Api\LeagueUserController::class, 'get_users_ranking_table']);
-Route::get('/users/{id}', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserMoneyDetails']);
 Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'addUserLoginCredentials']);
+Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
+/**
+ * Admin page.
+ */
 Route::get('/admin', [\App\Http\Controllers\Api\LeagueUserController::class, 'getUserAdminInfo']);
 Route::get('/admin/{id}/{active}', [\App\Http\Controllers\Api\LeagueUserController::class, 'activateUser']);
-Route::post('auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
