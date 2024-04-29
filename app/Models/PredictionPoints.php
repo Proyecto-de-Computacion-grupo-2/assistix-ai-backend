@@ -10,7 +10,7 @@ class PredictionPoints extends Model
 {
     use HasFactory;
 
-    protected $table = 'prediction_point';
+    protected $table = 'prediction_points';
     protected $primaryKey = 'id_prediction_points';
 
     public function player(): HasOne

@@ -140,7 +140,7 @@ return new class extends Migration
             $table->foreign('id_mundo_deportivo')->references('id_mundo_deportivo')->on('player')->onDelete('cascade');
         });
 
-        Schema::create('price_variation', function (Blueprint $table) {
+        Schema::create('price_variations', function (Blueprint $table) {
             $table->id('id_price_variation');
             $table->integer('id_mundo_deportivo');
             $table->date('price_day')->nullable();
