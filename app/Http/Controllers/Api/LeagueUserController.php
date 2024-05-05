@@ -32,7 +32,7 @@ class LeagueUserController extends Controller
      */
     public function getUserMoneyDetails($id)
     {
-        $league_user = LeagueUser::find($id, ['id_user', 'team_name', 'current_balance', 'future_balance', 'maximum_debt', 'team_points']);
+        $league_user = LeagueUser::find($id, ['id_user','team_players','team_name', 'current_balance', 'future_balance', 'maximum_debt', 'team_points']);
         if (!$league_user) {
             return response()->json(['message' => 'Player not found'], 404);
         }
