@@ -12,7 +12,7 @@ class LeagueUserController extends Controller
      * Get the Users table in the frontend.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get_users_ranking_table()
+    public function dashboard_get_users_ranking_table()
     {
         $user = LeagueUser::select('id_user', 'team_name', 'team_points', 'team_value')
             ->where('id_user', '!=', 1010)
@@ -30,7 +30,7 @@ class LeagueUserController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserMoneyDetails($id)
+    public function layout_get_user_details($id)
     {
         $league_user = LeagueUser::find($id, ['id_user','team_players','team_name', 'current_balance', 'future_balance', 'maximum_debt', 'team_points']);
         if (!$league_user) {
@@ -47,7 +47,7 @@ class LeagueUserController extends Controller
      * @param $password
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function addUserLoginCredentials($id, $email, $password)
+    public function add_user_login_credentials($id, $email, $password)
     {
         $user = LeagueUser::find($id);
         if (!$user) {
@@ -63,7 +63,7 @@ class LeagueUserController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRecommendationsLeagueUser($id)
+    public function get_recommendations_league_user($id)
     {
         $league_user = LeagueUser::with(['recommendations.player'])->where('id_user', $id)->get();
 
@@ -93,7 +93,7 @@ class LeagueUserController extends Controller
      * Get the user admin info.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserAdminInfo()
+    public function admin_get_users_info()
     {
         $league_user = LeagueUser::select(['id_user', 'email', 'team_name', 'active'])->get();
         if (!$league_user) {
@@ -111,7 +111,7 @@ class LeagueUserController extends Controller
      * @param $active
      * @return mixed
      */
-    public function activateUser($id, $active)
+    public function admin_activate_User($id, $active)
     {
         $user = LeagueUser::find($id);
         if (!$user) {

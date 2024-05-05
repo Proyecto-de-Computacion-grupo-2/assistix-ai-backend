@@ -27,7 +27,7 @@ class PlayerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayers()
+    public function players_get_all_players()
     {
         $players = Player::all('id_mundo_deportivo', 'full_name', 'position', 'player_value', 'photo_body', 'photo_face', 'season_23_24');
 
@@ -237,7 +237,7 @@ class PlayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getPlayerHistoricValueMarket($id)
+    public function market_player_historic_value($id)
     {
         $player = $this->findPlayerOrFail($id);
 
@@ -268,7 +268,7 @@ class PlayerController extends Controller
      * If no players are found in the market, a 404 response is returned with an error message.
      */
 
-    public function playerInMarket()
+    public function market_players()
     {
         $players = Player::where('is_in_market', 1)->get(['id_mundo_deportivo', 'full_name', 'player_value', 'position', 'photo_face', 'season_23_24', 'sell_price', 'is_in_market']);
 
@@ -309,7 +309,7 @@ class PlayerController extends Controller
      * Get the point predictions for all the players in the next game week.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function playersPointsPredictions()
+    public function dashboard_players_points_predictions()
     {
         $players = Player::with('predictions')
             ->get(['id_mundo_deportivo', 'full_name', 'player_value', 'position', 'photo_face', 'season_23_24']);
@@ -337,7 +337,7 @@ class PlayerController extends Controller
      * Get the players percentage change between the latest prediction and the latest real price.
      * @return \Illuminate\Http\JsonResponse
      */
-    public function playersValuePredictions()
+    public function dashboard_players_value_predictions()
     {
         $players = Player::select([
             'id_mundo_deportivo',
