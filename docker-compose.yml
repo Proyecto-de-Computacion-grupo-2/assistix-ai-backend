@@ -1,0 +1,23 @@
+services:
+  server:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - 8081:80
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+  app:
+    build: .
+    restart: unless-stopped
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+
+networks:
+  app-network:
+    driver: bridge
