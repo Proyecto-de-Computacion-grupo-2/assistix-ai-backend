@@ -53,3 +53,5 @@ $ php artisan make:model Name
 To create a controller:
 
 $ php artisan make:controller Name
+
+$ php artisan make:middleware IsAdmin  # Create a middleware
