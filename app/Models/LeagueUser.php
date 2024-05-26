@@ -37,6 +37,8 @@ class LeagueUser extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'admin' => $this->admin,
+        ];
     }
 }
