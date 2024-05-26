@@ -16,6 +16,7 @@ class LeagueUserController extends Controller
     {
         $user = LeagueUser::select('id_user', 'team_name', 'team_points', 'team_value')
             ->where('id_user', '!=', 1010)
+            ->where('admin', '!=', 1)
             ->orderBy('team_points', 'desc')
             ->get();
 
@@ -95,7 +96,7 @@ class LeagueUserController extends Controller
      */
     public function admin_get_users_info()
     {
-        $league_user = LeagueUser::select(['id_user', 'email', 'team_name', 'active'])->get();
+        $league_user = LeagueUser::select(['id_user', 'email', 'team_name', 'active'])->where('admin', '!=', 1)->get();
         if (!$league_user) {
             return response()->json(['message' => 'Users not found'], 404);
         }
