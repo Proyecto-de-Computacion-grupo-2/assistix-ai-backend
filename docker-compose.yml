@@ -1,5 +1,6 @@
 services:
   server:
+    container_name: back-php
     image: nginx:alpine
     restart: unless-stopped
     ports:
