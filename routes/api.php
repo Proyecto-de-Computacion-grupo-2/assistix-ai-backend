@@ -65,5 +65,6 @@ Route::middleware(['auth:api', IsAdmin::class])->get('/admin/{id}/{active}', [\A
  */
 Route::post('/users/{id}/{email}/{password}', [\App\Http\Controllers\Api\LeagueUserController::class, 'add_user_login_credentials']);
 Route::post('/auth/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::post('/auth/register', [\App\Http\Controllers\AuthController::class, 'register']);
 
 
