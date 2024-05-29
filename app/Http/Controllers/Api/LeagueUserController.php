@@ -8,7 +8,7 @@ use App\Models\LeagueUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use spatie\crypto;
+use Illuminate\Support\Str;
 
 
 class LeagueUserController extends Controller
@@ -35,7 +35,7 @@ class LeagueUserController extends Controller
      */
     private static function findUserEmail($email)
     {
-        $league_user = LeagueUser::where('email', $email)->first(['id_user', 'email', 'password']);
+        $league_user = LeagueUser::where('email', $email)->first(['id_user', 'email', 'password', 'active']);
         if (!$league_user) {
             return false;
         }
@@ -83,11 +83,27 @@ class LeagueUserController extends Controller
         } else {
             if (!$league_user['password']) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         }
+    }
 
+    /**
+     * Does user have email.
+     * @param $id
+     * @return bool
+     */
+    public static function hasEmail($id)
+    {
+        $league_user = self::findUserId($id);
+        if (!$league_user) {
+            return false;
+        } else {
+            if (!$league_user['email']) {
+                return false;
+            }
+            return true;
+        }
     }
 
     /**
@@ -112,10 +128,9 @@ class LeagueUserController extends Controller
         } else {
             if (openssl_public_encrypt($password, $encryptedPassword, $publicKey)) {
                 return base64_encode(utf8_encode($encryptedPassword));
-            } else {
-                Log::debug("OpenSSL error: " . openssl_error_string());
-                return response()->json(['error' => 'Código de error #19530, ponte en contacto con nosotros por favor.'], 500);
             }
+            Log::debug("OpenSSL error: " . openssl_error_string());
+            return response()->json(['error' => 'Código de error #19530, ponte en contacto con nosotros por favor.'], 500);
         }
     }
 
@@ -154,10 +169,9 @@ class LeagueUserController extends Controller
             $encryptedPassword = utf8_decode(base64_decode($encryptedPasswordBase64));
             if (openssl_private_decrypt($encryptedPassword, $decryptedPassword, $privateKey)) {
                 return $decryptedPassword;
-            } else {
-                Log::debug("OpenSSL error: " . openssl_error_string());
-                return response()->json(['error' => 'Código de error #19560, ponte en contacto con nosotros por favor.'], 500);
             }
+            Log::debug("OpenSSL error: " . openssl_error_string());
+            return response()->json(['error' => 'Código de error #19560, ponte en contacto con nosotros por favor.'], 500);
         }
     }
 
@@ -183,9 +197,8 @@ class LeagueUserController extends Controller
 
         if ($decryptedPassword === $password) {
             return $original;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -196,6 +209,9 @@ class LeagueUserController extends Controller
      */
     public static function isPasswordValid($password, $league_user)
     {
+        if (!self::hasEmail($league_user['id_user'])) {
+            return response()->json(['error' => 'Error, el usuario no tiene un email registrado.'], 404);
+        }
         if (!self::hasPassword($league_user['id_user'])) {
             return response()->json(['error' => 'Error, el usuario no tiene una contraseña registrada.'], 404);
         }
@@ -215,16 +231,23 @@ class LeagueUserController extends Controller
             return response()->json(['error' => 'User not found.'], 404);
         }
 
+        if (self::hasEmail($league_user['id_user'])) {
+            return response()->json(['error' => 'Error, el email ya ha sido registrado.'], 403);
+        }
+
         if (self::hasPassword($league_user['id_user'])) {
             return response()->json(['error' => 'Error, usuario ya registrado.'], 403);
         }
 
         $credentials['password'] = self::callToEncrypt($credentials['password']);
 
-        $league_user->email = $credentials['email'];
-        $league_user->password = $credentials['password'];
-        $league_user->save();
-        return false;
+        if (!Str::contains($credentials['password'], '500 Internal Server Error')) {
+            $league_user->email = $credentials['email'];
+            $league_user->password = $credentials['password'];
+            $league_user->save();
+            return false;
+        }
+        return $credentials['password'];
     }
 
     /**

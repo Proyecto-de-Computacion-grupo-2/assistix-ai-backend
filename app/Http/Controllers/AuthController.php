@@ -17,10 +17,13 @@ class AuthController extends Controller
     public function register()
     {
         $credentials = request(['id_user', 'email', 'password']);
+        if (strlen($credentials['id_user']) < 1 || strlen($credentials['email']) < 1 || strlen($credentials['password']) < 1) {
+            return response()->json(['error' => 'No se introdujo correctamente datos en uno de los campos.'], 404);
+        }
 
         $league_user = LeagueUserController::userExistsId($credentials['id_user']);
         if (!$league_user) {
-            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+            return response()->json(['error' => 'ID Usuario no encontrado.'], 404);
         }
 
         $insertFail = LeagueUserController::insertEmailPassword($credentials, $league_user);
@@ -28,7 +31,7 @@ class AuthController extends Controller
             return $insertFail;
         }
 
-        return response()->json(['Great success' => 'Registrado correctamente.']);
+        return response()->json(['GreatSuccess' => 'Registrado correctamente.']);
     }
 
 
@@ -42,7 +45,11 @@ class AuthController extends Controller
 
         $league_user = LeagueUserController::userExistsEmail($credentials['email']);
         if (!$league_user) {
-            return response()->json(['message' => 'Usuario no encontrado.'], 404);
+            return response()->json(['error' => 'ID Usuario no encontrado.'], 404);
+        }
+
+        if (!$league_user->active) {
+            return response()->json(['error' => 'El Usuario no está habilitado.'], 403);
         }
 
         $isValid = LeagueUserController::isPasswordValid($credentials['password'], $league_user);
