@@ -40,7 +40,17 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        $league_user = LeagueUserController::userExistsEmail($credentials['email']);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+
+       /* $league_user = LeagueUserController::userExistsEmail($credentials['email']);
         if (!$league_user) {
             return response()->json(['message' => 'Player not found'], 404);
         }
@@ -63,6 +73,6 @@ class AuthController extends Controller
             }
         } else {
             return $isValid;
-        }
+        }*/
     }
 }

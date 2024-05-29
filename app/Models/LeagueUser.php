@@ -39,6 +39,7 @@ class LeagueUser extends Authenticatable implements JWTSubject
     {
         return [
             'admin' => $this->admin,
+            'id_user' => $this->id_user,
         ];
     }
 }

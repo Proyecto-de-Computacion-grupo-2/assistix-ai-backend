@@ -17,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/app/public_key_16184.pem
+/app/private_key_16184.pem
