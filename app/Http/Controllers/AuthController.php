@@ -41,7 +41,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['id_user', 'email', 'password']);
+        $credentials = request(['email', 'password']);
 
         $league_user = LeagueUserController::userExistsEmail($credentials['email']);
         if (!$league_user) {

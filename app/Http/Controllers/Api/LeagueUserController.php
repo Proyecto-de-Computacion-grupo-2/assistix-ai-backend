@@ -35,7 +35,7 @@ class LeagueUserController extends Controller
      */
     private static function findUserEmail($email)
     {
-        $league_user = LeagueUser::where('email', $email)->first(['id_user', 'email', 'password', 'active']);
+        $league_user = LeagueUser::where('email', $email)->first();
         if (!$league_user) {
             return false;
         }
