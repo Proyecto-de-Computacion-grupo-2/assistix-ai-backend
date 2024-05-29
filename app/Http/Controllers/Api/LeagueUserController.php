@@ -8,6 +8,8 @@ use App\Models\LeagueUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use spatie\crypto;
+
 
 class LeagueUserController extends Controller
 {
@@ -15,29 +17,57 @@ class LeagueUserController extends Controller
     /**
      * Find user in DD BB with ID.
      * @param $id
-     * @return array
+     * @return mixed
      */
     private static function findUserId($id)
     {
         $league_user = LeagueUser::find($id, ['id_user', 'email', 'password']);
         if (!$league_user) {
-            return [false, false];
+            return false;
         }
-        return [$league_user, response()->json($league_user)];
+        return $league_user;
     }
 
     /**
      * Find user in DD BB with email.
      * @param $email
-     * @return array
+     * @return mixed
      */
     private static function findUserEmail($email)
     {
         $league_user = LeagueUser::where('email', $email)->first(['id_user', 'email', 'password']);
         if (!$league_user) {
-            return [false, false];
+            return false;
         }
-        return [$league_user, response()->json($league_user)];
+        return $league_user;
+    }
+
+    /**
+     * Does user exist.
+     * @param $id
+     * @return false | array
+     */
+    public static function userExistsId($id)
+    {
+        $league_user = self::findUserId($id);
+        if (!$league_user) {
+            return false;
+        }
+        return $league_user;
+    }
+
+    /**
+     * Does user exist, with email.
+     * @param $email
+     * @return false | array
+     */
+    public static function userExistsEmail($email)
+    {
+        $league_user = self::findUserEmail($email);
+        if (!$league_user) {
+            return false;
+        }
+        return $league_user;
     }
 
     /**
@@ -47,7 +77,7 @@ class LeagueUserController extends Controller
      */
     public static function hasPassword($id)
     {
-        $league_user = self::findUserId($id)[0];
+        $league_user = self::findUserId($id);
         if (!$league_user) {
             return false;
         } else {
@@ -61,39 +91,32 @@ class LeagueUserController extends Controller
     }
 
     /**
-     * Compare given password with the registered one.
-     * @param $password
-     * @param $original
-     * @return bool
-     */
-    private static function comparePassword($password, $original)
-    {
-        $decryptedPassword = self::callToDecrypt($original);
-
-        if ($decryptedPassword === $password) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Encrypt given password.
      * @param $password
      * @return JsonResponse | string
      */
     private static function encryptPassword($password)
     {
-        $publicKeyPath = base_path('app/public_key_16184.pem');
+        $publicKeyPath = base_path('app/Keys/public_key_16184.pem');
         if (!File::exists($publicKeyPath)) {
-            return response()->json(['error' => 'P16K not found'], 500);
+            Log::error('Check public key path.');
+            return response()->json(['error' => 'Código de error #19510, ponte en contacto con nosotros por favor.'], 500);
         }
 
-        $publicKey = File::get($publicKeyPath);
+        $publicKeyString = File::get($publicKeyPath);
+        $publicKey = openssl_get_publickey($publicKeyString);
 
-        openssl_public_encrypt($password, $encryptedPassword, $publicKey);
-
-        return base64_encode($encryptedPassword);
+        if (!$publicKey) {
+            Log::error('Error loading public key.');
+            return response()->json(['error' => 'Código de error #19520, ponte en contacto con nosotros por favor.'], 500);
+        } else {
+            if (openssl_public_encrypt($password, $encryptedPassword, $publicKey)) {
+                return base64_encode(utf8_encode($encryptedPassword));
+            } else {
+                Log::debug("OpenSSL error: " . openssl_error_string());
+                return response()->json(['error' => 'Código de error #19530, ponte en contacto con nosotros por favor.'], 500);
+            }
+        }
     }
 
     /**
@@ -113,20 +136,29 @@ class LeagueUserController extends Controller
      */
     private static function decryptPassword($password)
     {
-        $privateKeyPath = base_path('app/private_key_16184.pem');
+        $privateKeyPath = base_path('app/Keys/private_key_16184.pem');
         if (!File::exists($privateKeyPath)) {
-            return response()->json(['error' => 'Pr16K error.'], 500);
+            Log::error('Check private key path.');
+            return response()->json(['error' => 'Código de error #19540, ponte en contacto con nosotros.'], 500);
         }
 
-        $privateKey = File::get($privateKeyPath);
+        $privateKeyString = File::get($privateKeyPath);
+        $privateKey = openssl_get_privatekey($privateKeyString);
 
         $encryptedPasswordBase64 = $password;
 
-        $encryptedPassword = base64_decode($encryptedPasswordBase64);
-
-        openssl_private_decrypt($encryptedPassword, $decryptedPassword, $privateKey);
-
-        return $decryptedPassword;
+        if (!$privateKey) {
+            Log::error('Error loading private key.');
+            return response()->json(['error' => 'Código de error #19550, ponte en contacto con nosotros por favor.'], 500);
+        } else {
+            $encryptedPassword = utf8_decode(base64_decode($encryptedPasswordBase64));
+            if (openssl_private_decrypt($encryptedPassword, $decryptedPassword, $privateKey)) {
+                return $decryptedPassword;
+            } else {
+                Log::debug("OpenSSL error: " . openssl_error_string());
+                return response()->json(['error' => 'Código de error #19560, ponte en contacto con nosotros por favor.'], 500);
+            }
+        }
     }
 
     /**
@@ -140,75 +172,58 @@ class LeagueUserController extends Controller
     }
 
     /**
-     * Does user exist.
-     * @param $id
+     * Compare given password with the registered one.
+     * @param $password
+     * @param $original
      * @return bool
      */
-    public static function userExistsId($id)
+    private static function comparePassword($password, $original)
     {
-        $league_user = self::findUserId($id)[0];
-        if (!$league_user) {
-            return false;
-        }
-        return true;
-    }
+        $decryptedPassword = self::callToDecrypt($original);
 
-    /**
-     * Does user exist, with email.
-     * @param $email
-     * @return bool
-     */
-    public static function userExistsEmail($email)
-    {
-        $league_user = self::findUserEmail($email)[0];
-        if (!$league_user) {
+        if ($decryptedPassword === $password) {
+            return $original;
+        } else {
             return false;
         }
-        return true;
     }
 
     /**
      * Check if user entered a valid password upon login.
-     * @param $credentials
+     * @param $password
+     * @param $league_user
      * @return JsonResponse | bool
      */
-    public static function isPasswordValid($credentials)
+    public static function isPasswordValid($password, $league_user)
     {
-        $league_user = self::findUserId($credentials['id_user'])[1];
-        $league_user_object = self::findUserId($credentials['id_user'])[0];
-        if (!$league_user) {
-            return false;
+        if (!self::hasPassword($league_user['id_user'])) {
+            return response()->json(['error' => 'Error, el usuario no tiene una contraseña registrada.'], 404);
         }
 
-        if (!self::hasPassword($credentials['id_user'])) {
-            return response()->json(['error' => 'Error, user doesn\'t have registered password.'], 404);
-        }
-
-        return self::comparePassword($credentials['password'], $league_user_object->password);
+        return self::comparePassword($password, $league_user->password);
     }
 
     /**
      * Insert user password.
      * @param $credentials
+     * @param $league_user
      * @return JsonResponse | bool
      */
-    public static function insertEmailPassword($credentials)
+    public static function insertEmailPassword($credentials, $league_user)
     {
-        $league_user = self::findUserId($credentials['id_user'])[1];
-        $league_user_object = self::findUserId($credentials['id_user'])[0];
         if (!$league_user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
 
-        if (self::hasPassword($credentials['id_user'])) {
-            return response()->json(['error' => 'Error, user already registered.'], 403);
+        if (self::hasPassword($league_user['id_user'])) {
+            return response()->json(['error' => 'Error, usuario ya registrado.'], 403);
         }
 
         $credentials['password'] = self::callToEncrypt($credentials['password']);
 
-        $league_user_object->email = $credentials['email'];
-        $league_user_object->password = $credentials['password'];
-        $league_user_object->save();
+        $league_user->email = $credentials['email'];
+        $league_user->password = $credentials['password'];
+        $league_user->save();
         return false;
     }
 
