@@ -1,39 +1,41 @@
 services:
-  server:
-    container_name: back-php
-    image: nginx:alpine
-    restart: unless-stopped
-    ports:
-      - 8081:80
-    networks:
-      - app-network
-    volumes:
-      - ./:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-  db:
-    image: mariadb
-    container_name: mariadb_database
-    restart: always
-    environment:
-        MARIADB_DATABASE: pc2
-        MARIADB_ROOT_PASSWORD: "uem.ua2c19789!"
-    ports:
-        - "3306:3306"
-    volumes:
-        - ./pc2-export.sql:/docker-entrypoint-initdb.d/database_dump.sql
-        - mariadb_volume:/var/lib/mysql
+    server:
+        container_name: back-php
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - 8081:80
+        networks:
+            - app-network
+        volumes:
+            - ./:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+    db:
+        image: mariadb
+        container_name: mariadb_database_back
+        restart: always
+        environment:
+            MARIADB_DATABASE: pc2
+            MARIADB_ROOT_PASSWORD: "uem.ua2c19789!"
+        networks:
+            - app-network
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./pc2-export.sql:/docker-entrypoint-initdb.d/database_dump.sql
+            - mariadb_volume:/var/lib/mysql
 
-  app:
-    build: .
-    restart: unless-stopped
-    networks:
-      - app-network
-    volumes:
-      - ./:/var/www
+    app:
+        build: .
+        restart: unless-stopped
+        networks:
+            - app-network
+        volumes:
+            - ./:/var/www
 
 networks:
-  app-network:
-    driver: bridge
+    app-network:
+        driver: bridge
 
 volumes:
     mariadb_volume:
