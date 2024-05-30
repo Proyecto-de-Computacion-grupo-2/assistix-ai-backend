@@ -89,7 +89,7 @@ class UserRecommendationController extends Controller
             'position' => $recommendation->player->position,
             'photo_face' => $recommendation->player->photo_face,
             'photo_body' => $recommendation->player->photo_body,
-            'prediction' => $recommendation->player->predictions[0]->point_prediction,
+            'point_prediction' => $recommendation->player->predictions[0]->point_prediction,
             'player_value' => $recommendation->player->player_value
         ];
     }
