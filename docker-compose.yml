@@ -10,6 +10,18 @@ services:
     volumes:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+  db:
+    image: mariadb
+    container_name: mariadb_database
+    restart: always
+    environment:
+        MARIADB_DATABASE: pc2
+        MARIADB_ROOT_PASSWORD: "uem.ua2c19789!"
+    ports:
+        - "3306:3306"
+    volumes:
+        - ./pc2-export.sql:/docker-entrypoint-initdb.d/database_dump.sql
+        - mariadb_volume:/var/lib/mysql
 
   app:
     build: .
@@ -22,3 +34,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+    mariadb_volume:
