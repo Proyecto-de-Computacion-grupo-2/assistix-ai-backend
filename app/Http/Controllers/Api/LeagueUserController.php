@@ -113,7 +113,7 @@ class LeagueUserController extends Controller
      */
     private static function encryptPassword($password)
     {
-        $publicKeyPath = base_path('app/Keys/public_key_16184.pem');
+        $publicKeyPath = base_path('app/keys/public_key_16184.pem');
         if (!File::exists($publicKeyPath)) {
             Log::error('Check public key path.');
             return response()->json(['error' => 'Código de error #19510, ponte en contacto con nosotros por favor.'], 500);
@@ -127,7 +127,7 @@ class LeagueUserController extends Controller
             return response()->json(['error' => 'Código de error #19520, ponte en contacto con nosotros por favor.'], 500);
         } else {
             if (openssl_public_encrypt($password, $encryptedPassword, $publicKey)) {
-                return base64_encode(utf8_encode($encryptedPassword));
+                return utf8_encode(base64_encode($encryptedPassword));
             }
             Log::debug("OpenSSL error: " . openssl_error_string());
             return response()->json(['error' => 'Código de error #19530, ponte en contacto con nosotros por favor.'], 500);
@@ -151,7 +151,7 @@ class LeagueUserController extends Controller
      */
     private static function decryptPassword($password)
     {
-        $privateKeyPath = base_path('app/Keys/private_key_16184.pem');
+        $privateKeyPath = base_path('app/keys/private_key_16184.pem');
         if (!File::exists($privateKeyPath)) {
             Log::error('Check private key path.');
             return response()->json(['error' => 'Código de error #19540, ponte en contacto con nosotros.'], 500);
@@ -166,7 +166,7 @@ class LeagueUserController extends Controller
             Log::error('Error loading private key.');
             return response()->json(['error' => 'Código de error #19550, ponte en contacto con nosotros por favor.'], 500);
         } else {
-            $encryptedPassword = utf8_decode(base64_decode($encryptedPasswordBase64));
+            $encryptedPassword = base64_decode(utf8_decode($encryptedPasswordBase64));
             if (openssl_private_decrypt($encryptedPassword, $decryptedPassword, $privateKey)) {
                 return $decryptedPassword;
             }
