@@ -37,9 +37,15 @@ Copy the .env.example file to a new file named .env, which will store your envir
 Edit the .env file with your database and other environment-specific settings.
 
 ### Step 4: Upload PGP credentials
-Create a new folder called Keys under the app section . Upload the PGP credentials to this folder.
+Create a new folder called keys under the app section. Upload the PGP credentials to this folder.
 
-### Step 4: Run the program
+```bash
+cd app
+mkdir keys
+```
+
+
+### Step 5: Run the program
 
 ```bash
 php artisan serve
